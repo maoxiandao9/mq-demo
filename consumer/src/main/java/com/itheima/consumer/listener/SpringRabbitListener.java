@@ -1,10 +1,8 @@
 package com.itheima.consumer.listener;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
-import org.springframework.amqp.rabbit.annotation.Exchange;
-import org.springframework.amqp.rabbit.annotation.Queue;
-import org.springframework.amqp.rabbit.annotation.QueueBinding;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.annotation.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
@@ -12,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class SpringRabbitListener {
     // 利用RabbitListener来声明要监听的队列信息
     // 将来一旦监听的队列中有了消息，就会推送给当前服务，调用当前方法，处理消息。
@@ -82,6 +81,15 @@ public class SpringRabbitListener {
     @RabbitListener(queues = "object.queue")
     public void listenSimpleQueueMessage(Map<String, Object> msg) throws InterruptedException {
         System.out.println("消费者接收到object.queue消息：【" + msg + "】");
+    }
+
+    @RabbitListener(queuesToDeclare = @Queue(
+            name = "lazy.queue",
+            durable = "true",
+            arguments = @Argument(name = "x-queue-mode", value = "lazy")
+    ))
+    public void listenLazyQueue(String msg){
+        log.info("接收到 lazy.queue的消息：{}", msg);
     }
 
 }
