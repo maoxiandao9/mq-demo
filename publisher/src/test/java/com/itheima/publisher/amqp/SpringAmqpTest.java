@@ -73,4 +73,22 @@ public class SpringAmqpTest {
         // 发送消息
         rabbitTemplate.convertAndSend(exchangeName, "blue", message);
     }
+
+    /**
+     * 通配符规则：
+     * - #：匹配一个或多个词
+     * - *：匹配不多不少恰好1个词
+     */
+    /**
+     * topicExchange
+     */
+    @Test
+    public void testSendTopicExchange() {
+        // 交换机名称
+        String exchangeName = "hmall.topic";
+        // 消息
+        String message = "喜报！孙悟空大战哥斯拉，胜!";
+        // 发送消息
+        rabbitTemplate.convertAndSend(exchangeName, "china.news", message);
+    }
 }
