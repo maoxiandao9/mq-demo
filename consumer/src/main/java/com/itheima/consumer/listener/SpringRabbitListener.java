@@ -97,4 +97,13 @@ public class SpringRabbitListener {
         log.info("接收到 lazy.queue的消息：{}", msg);
     }
 
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(name = "delay.queue", durable = "true"),
+            exchange = @Exchange(name = "delay.direct", delayed = "true"),
+            key = "delay"
+    ))
+    public void listenDelayMessage(String msg){
+        log.info("接收到delay.queue的延迟消息：{}", msg);
+    }
+
 }
