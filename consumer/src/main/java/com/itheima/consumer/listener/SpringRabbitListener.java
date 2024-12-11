@@ -3,6 +3,7 @@ package com.itheima.consumer.listener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.*;
+import org.springframework.amqp.support.converter.MessageConversionException;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
@@ -17,7 +18,11 @@ public class SpringRabbitListener {
     // 可以看到方法体中接收的就是消息体的内容
     @RabbitListener(queues = "simple.queue")
     public void listenSimpleQueueMessage(String msg) throws InterruptedException {
-        System.out.println("spring 消费者接收到消息：【" + msg + "】");
+        log.info("spring 消费者接收到消息：【" + msg + "】");
+        if (true) {
+            throw new MessageConversionException("故意的");
+        }
+        log.info("消息处理完成");
     }
 
     @RabbitListener(queues = "work.queue")
