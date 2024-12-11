@@ -38,6 +38,13 @@ public class SpringAmqpTest {
         }
     }
 
+    /**
+     * 交换机的类型有四种：
+     * - Fanout：广播，将消息交给所有绑定到交换机的队列。我们最早在控制台使用的正是Fanout交换机
+     * - Direct：订阅，基于RoutingKey（路由key）发送给订阅了消息的队列
+     * - Topic：通配符订阅，与Direct类似，只不过RoutingKey可以使用通配符
+     * - Headers：头匹配，基于MQ的消息头匹配，用的较少。
+     */
     @Test
     public void testFanoutExchange() {
         // 交换机名称
@@ -45,5 +52,25 @@ public class SpringAmqpTest {
         // 消息
         String message = "hello, everyone!";
         rabbitTemplate.convertAndSend(exchangeName, "", message);
+    }
+
+    @Test
+    public void testSendRedDirectExchange() {
+        // 交换机名称
+        String exchangeName = "hmall.direct";
+        // 消息
+        String message = "红色警报！日本乱排核废水，导致海洋生物变异，惊现哥斯拉！";
+        // 发送消息
+        rabbitTemplate.convertAndSend(exchangeName, "red", message);
+    }
+
+    @Test
+    public void testSendBlueDirectExchange() {
+        // 交换机名称
+        String exchangeName = "hmall.direct";
+        // 消息
+        String message = "最新报道，哥斯拉是居民自治巨型气球，虚惊一场！";
+        // 发送消息
+        rabbitTemplate.convertAndSend(exchangeName, "blue", message);
     }
 }
